@@ -3,7 +3,14 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-project ("Compiler")
+include(cmake/CompileOptions.cmake)
 
-# Include sub-projects.
-add_subdirectory ("Compiler")
+project(CSharp-compiler)
+
+include_directories(
+    ${PROJECT_SOURCE_DIR}/submodules/antlr4-cpp-runtime/runtime/src
+    ${PROJECT_SOURCE_DIR}/src/Grammar/antlr4-parser-grammar
+)
+
+add_subdirectory(submodules)
+add_subdirectory(src)
