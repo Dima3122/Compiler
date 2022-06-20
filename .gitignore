@@ -366,3 +366,5 @@ antlr4-parser-grammar/
 !antlr4-parser-grammar/.gitkeep
 build/
 antlr4/
+.antlr
+.vscode

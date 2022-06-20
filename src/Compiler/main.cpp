@@ -2,7 +2,7 @@
 #include <CSharpGrammarParser.h>
 
 #include "SymbolTable/Node.hpp"
-
+#include "SymbolTable/SybmolTableVisitor.hpp"
 #include <antlr4-runtime.h>
 #include <cxxopts.hpp>
 
@@ -49,9 +49,12 @@ int main(int argc, const char *argv[])
     CSharpGrammarParser parser(&tokens);
     parser.setBuildParseTree(true);
     antlr4::tree::ParseTree *tree = parser.program();
-    std::cout << tree->toStringTree() << std::endl;
+    //std::cout << tree->toStringTree() << std::endl;
+    
     // parser.expression();
     // std::cout << parser.Const << std::endl;
     // std::cout << parser.expression()->toStringTree() << std::endl;
+    SybmolTableVisitor semantic_visitor;
+    semantic_visitor.visit(tree);
     return 0;
 }
