@@ -1,11 +1,14 @@
 add_library(grammar STATIC ${CMAKE_CURRENT_SOURCE_DIR}/Grammar/antlr4-parser-grammar/CSharpGrammarLexer.cpp 
-						   ${CMAKE_CURRENT_SOURCE_DIR}/Grammar/antlr4-parser-grammar/CSharpGrammarParser.cpp)
+						   ${CMAKE_CURRENT_SOURCE_DIR}/Grammar/antlr4-parser-grammar/CSharpGrammarParser.cpp
+						   ${CMAKE_CURRENT_SOURCE_DIR}/Grammar/antlr4-parser-grammar/CSharpGrammarBaseVisitor.cpp
+						   ${CMAKE_CURRENT_SOURCE_DIR}/Grammar/antlr4-parser-grammar/CSharpGrammarVisitor.cpp)
 
 target_link_libraries(grammar PRIVATE antlr4_cpp_runtime)
 
 set(SOURCE_FILES
 	Compiler/main.cpp
 	Compiler/SymbolTable/Node.cpp
+	Compiler/SymbolTable/SybmolTableVisitor.cpp
 )
 
 add_executable(compiler_exe ${SOURCE_FILES})
