@@ -1,10 +1,10 @@
 #include "Node.hpp"
 
-Node::Node(std::string name, std::string type, int size, int level, int line)
+Node::Node(std::string text, std::string name, std::string type, int level, int line)
 {
+    this->text = text;
     this->name = name;
     this->type = type;
-    this->size = size;
     this->level = level;
     this->line = line;
 }
@@ -22,5 +22,5 @@ int Node::GetHash(std::string Name)
 
 void Node::print()
 {
-    std::cout << "  name=" << name << ", type=" << type << ", size=" << size << ", level=" << level << ", line_number=" << line << std::endl;
+    std::cout << "name=" << name << "\ttype=" << type << "\tlevel=" << level << "\tline_number=" << line << std::endl;
 }

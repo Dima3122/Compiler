@@ -56,5 +56,9 @@ int main(int argc, const char *argv[])
     // std::cout << parser.expression()->toStringTree() << std::endl;
     SybmolTableVisitor semantic_visitor;
     semantic_visitor.visit(tree);
+    for (auto item: semantic_visitor.GetSymbolTable())
+    {
+        item.second.print(); 
+    }    
     return 0;
 }

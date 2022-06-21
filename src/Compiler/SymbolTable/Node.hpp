@@ -1,16 +1,23 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <map>
+#include <vector>
+
+struct LevelFunc
+{
+    std::vector<int> FriendLevel;    
+};
 
 class Node
 {
 private:
-    std::string name, type;
-    int size, level, line;
-    //Node *next;    
+    std::string text, name, type;
+    int line, level;
+    //std::map<int, LevelFunc> level;
 public:
     Node() = default;
-    Node(std::string name, std::string type, int size, int level, int line);
+    Node(std::string text, std::string name, std::string type, int level, int line);
     ~Node() = default;
 
     void print();
