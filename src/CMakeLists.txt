@@ -9,6 +9,9 @@ set(SOURCE_FILES
 	Compiler/main.cpp
 	Compiler/SymbolTable/Node.cpp
 	Compiler/SymbolTable/SybmolTableVisitor.cpp
+	Compiler/Semantic/SemanticVisitor.cpp
+	Compiler/Ast/Ast.cpp
+	Compiler/Ast/AstVisitor.hpp
 )
 
 add_executable(compiler_exe ${SOURCE_FILES})

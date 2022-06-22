@@ -1,6 +1,7 @@
 #include <CSharpGrammarLexer.h>
 #include <CSharpGrammarParser.h>
 
+#include "Ast/AstVisitor.hpp"
 #include "SymbolTable/Node.hpp"
 #include "SymbolTable/SybmolTableVisitor.hpp"
 #include <antlr4-runtime.h>
@@ -59,6 +60,7 @@ int main(int argc, const char *argv[])
     for (auto item: semantic_visitor.GetSymbolTable())
     {
         item.second.print(); 
-    }    
+    }
+    AstVisitor astVisitor;
     return 0;
 }

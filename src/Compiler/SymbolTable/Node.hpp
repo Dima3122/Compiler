@@ -1,13 +1,13 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <map>
-#include <vector>
+//#include <map>
+//#include <vector>
 
-struct LevelFunc
-{
-    std::vector<int> FriendLevel;    
-};
+// struct LevelFunc
+// {
+//     std::vector<int> FriendLevel;    
+// };
 
 class Node
 {
