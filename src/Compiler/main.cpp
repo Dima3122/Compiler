@@ -1,9 +1,9 @@
-#include <CSharpGrammarLexer.h>
-#include <CSharpGrammarParser.h>
+#include <CsharpLexer.h>
+#include <CsharpParser.h>
 
-#include "Ast/AstVisitor.hpp"
-#include "SymbolTable/Node.hpp"
-#include "SymbolTable/SybmolTableVisitor.hpp"
+#include "Ast/Ast.hpp"
+// #include "SymbolTable/Node.hpp"
+// #include "SymbolTable/SybmolTableVisitor.hpp"
 #include <antlr4-runtime.h>
 #include <cxxopts.hpp>
 
@@ -28,7 +28,7 @@ int main(int argc, const char *argv[])
     // create lexer
     std::string filename = args["file"].as<std::string>();
     ANTLRFileStream input(filename);
-    CSharpGrammarLexer lexer(&input);
+    CsharpLexer lexer(&input);
 
     // Option --dump-tokens
     if (args["dump-tokens"].as<bool>())
@@ -47,7 +47,7 @@ int main(int argc, const char *argv[])
 
     CommonTokenStream tokens(&lexer);
 
-    CSharpGrammarParser parser(&tokens);
+    CsharpParser parser(&tokens);
     parser.setBuildParseTree(true);
     antlr4::tree::ParseTree *tree = parser.program();
     //std::cout << tree->toStringTree() << std::endl;
@@ -55,12 +55,12 @@ int main(int argc, const char *argv[])
     // parser.expression();
     // std::cout << parser.Const << std::endl;
     // std::cout << parser.expression()->toStringTree() << std::endl;
-    SybmolTableVisitor semantic_visitor;
-    semantic_visitor.visit(tree);
-    for (auto item: semantic_visitor.GetSymbolTable())
-    {
-        item.second.print(); 
-    }
-    AstVisitor astVisitor;
+    // SybmolTableVisitor semantic_visitor;
+    // semantic_visitor.visit(tree);
+    // for (auto item: semantic_visitor.GetSymbolTable())
+    // {
+    //     item.second.print(); 
+    // }
+    //Visitor astVisitor;
     return 0;
 }

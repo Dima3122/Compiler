@@ -1,4 +1,4 @@
-﻿grammar CSharpGrammar;
+﻿grammar Csharp;
 
 KEYWORD:
 	'abstract'

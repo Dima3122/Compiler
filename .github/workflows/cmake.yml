@@ -25,7 +25,7 @@ jobs:
       run: wget -P ${{github.workspace}}/antlr4 https://www.antlr.org/download/antlr-4.9.1-complete.jar
 
     - name: Generate grammar files
-      run: java -jar ${{github.workspace}}/antlr4/antlr-4.9.1-complete.jar -Dlanguage=Cpp ${{github.workspace}}/src/Grammar/CSharpGrammar.g4 -o ${{github.workspace}}/src/Grammar/antlr4-parser-grammar -Xexact-output-dir -no-listener -visitor
+      run: java -jar ${{github.workspace}}/antlr4/antlr-4.9.1-complete.jar -Dlanguage=Cpp ${{github.workspace}}/src/Grammar/Csharp.g4 -o ${{github.workspace}}/src/Grammar/antlr4-parser-grammar -Xexact-output-dir -no-listener -visitor
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
