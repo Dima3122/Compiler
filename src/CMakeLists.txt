@@ -11,10 +11,12 @@ set(SOURCE_FILES
 	Compiler/SymbolTable/SybmolTableVisitor.cpp
 	Compiler/Semantic/SemanticVisitor.cpp
 	Compiler/CodeGen/CodeGen.cpp
+	Compiler/Parser/Parser.cpp
 )
 
 add_executable(compiler_exe ${SOURCE_FILES})
 
+target_link_libraries(compiler_exe PRIVATE CLI11)
 target_link_libraries(compiler_exe PRIVATE cxxopts)
 target_link_libraries(compiler_exe PRIVATE grammar)
 
