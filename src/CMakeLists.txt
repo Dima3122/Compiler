@@ -7,9 +7,10 @@ target_link_libraries(grammar PRIVATE antlr4_cpp_runtime)
 
 set(SOURCE_FILES
 	Compiler/main.cpp
+	Compiler/Ast/Ast.cpp
 	Compiler/SymbolTable/SybmolTableVisitor.cpp
 	Compiler/Semantic/SemanticVisitor.cpp
-	Compiler/Ast/Ast.cpp
+	Compiler/CodeGen/CodeGen.cpp
 )
 
 add_executable(compiler_exe ${SOURCE_FILES})

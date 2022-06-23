@@ -1,9 +1,9 @@
 [submodule "submodules/antlr4-cpp-runtime"]
 	path = submodules/antlr4-cpp-runtime
 	url = https://github.com/adeharo9/antlr4-cpp-runtime.git
-[submodule "submodules/cxxopts"]
-	path = submodules/cxxopts
-	url = https://github.com/jarro2783/cxxopts.git
 [submodule "submodules/gtest"]
 	path = submodules/gtest
 	url = https://github.com/google/googletest.git
+[submodule "submodules/cxxopts"]
+	path = submodules/cxxopts
+	url = https://github.com/jarro2783/cxxopts.git

@@ -1,13 +1,14 @@
 #include <CsharpLexer.h>
 #include <CsharpParser.h>
-
-#include "Ast/Ast.hpp"
-// #include "SymbolTable/Node.hpp"
-// #include "SymbolTable/SybmolTableVisitor.hpp"
-#include <antlr4-runtime.h>
+#include <CsharpBaseVisitor.h>
+#include "Parser/Parser.hpp"
+#include "Semantic/SemanticVisitor.hpp"
+#include "CodeGen/CodeGen.hpp"
 #include <cxxopts.hpp>
-
+#include <antlr4-runtime.h>
+#include <string>
 #include <iostream>
+#include <cstdio>
 
 using namespace antlr4;
 
