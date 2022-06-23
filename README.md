@@ -4,8 +4,6 @@
 3. Configure CMake: cmake -B ./build -DCMAKE_BUILD_TYPE=Debug
 4. Build: cmake --build ./build --config Debug
 
-# Launch
-
 # Launch Options
 1. --dump-tokens -> Вывод токенов в терминал
 2. --dump-table  -> Вывод таблицы символов в терминал
