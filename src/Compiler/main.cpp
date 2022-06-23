@@ -1,6 +1,6 @@
 #include <CsharpLexer.h>
 #include <CsharpParser.h>
-#include <CsharpBaseVisitor.h>
+#include <CsharpBaseListener.h>
 #include "Parser/Parser.hpp"
 #include "Semantic/SemanticVisitor.hpp"
 #include "CodeGen/CodeGen.hpp"
@@ -30,6 +30,7 @@ std::string exec(const char *cmd)
 
 int main(int argc, const char *argv[])
 {
+
     CLI::App app;
     std::string filepath;
     std::string fileout = "../../examples/file.ll";
@@ -60,10 +61,9 @@ int main(int argc, const char *argv[])
         std::cout << VERSION << '\n';
     }
     // parse_test
-    // cs_lexer::dump_tokens(filepath, dump_tokens_key);
-    // cs_lexer::dump_ast(filepath, xml_file, dump_ast);
+    //  cs_lexer::dump_tokens(filepath, dump_tokens_key);
+    //  cs_lexer::dump_ast(filepath, xml_file, dump_ast);
     auto parse_result = cs_lang::parse_test(filepath);
-    cs_lang::parse_test(filepath);
     if (!parse_result.m_errors.empty())
     {
         cs_lang::dump_errors(parse_result.m_errors);
