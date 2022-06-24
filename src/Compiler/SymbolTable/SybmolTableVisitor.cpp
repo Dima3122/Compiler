@@ -5,20 +5,6 @@
 #include <fstream>
 #include <iostream>
 
-//   void visit(ASTProgram &node) override;
-//   void visit(ASTFunction &node) override;
-//   void visit(ASTVariable &node) override;
-//   void visit(ASTFuncCall &node) override;
-//   void visit(ASTScope &node) override;
-//   void visit(ASTArgs &node) override;
-//   void visit(ASTAssign &node) override;
-//   void visit(ASTReturn &node) override;
-//   void visit(ASTIf &node) override;
-//   void visit(ASTFor &node) override;
-//   void visit(ASTForCond &node) override;
-//   void visit(ASTForOp &node) override;
-//   void visit(ASTKw &node) override;
-
 std::size_t VisitorTable::table_level = 0;
 std::size_t VisitorTable::vector_num = 0;
 std::size_t inner_counter = 0;
@@ -53,19 +39,14 @@ void VisitorTable::visit(ASTFunction &node)
     incr_level();
     for (auto &param : node.get_params())
     {
-
         param->accept(*this);
-
         node.append_param_to_vector(param->get_var_name(), param->get_var_type());
     }
 
     set_fprop(node.func_name(), std::make_pair("", ""));
     for (auto &param : node.get_param_from_vector())
     {
-
         set_fprop(node.func_name(), param);
-
-        // std::cout << "Params: " << param.first << " :: " << param.second << "\n";
     }
     p.fragment_type = "FUNCTION_DEF";
 
@@ -74,11 +55,10 @@ void VisitorTable::visit(ASTFunction &node)
     node.get_scope()->accept(*this);
     if (node.get_return() != nullptr)
     {
-        // Properties p_return;
         p.level = table_level;
         if (node.get_return()->is_literal())
         {
-            p.fragment_type = "LRETURN_VARIABLE"; // LRETURN -> L(iteral)RETURN
+            p.fragment_type = "LRETURN_VARIABLE";
         }
         else
         {
@@ -108,7 +88,6 @@ void VisitorTable::visit(ASTFunction &node)
         }
         table[get_fname_index(current_function)][node.get_return()->get_return_value() + "_" + "return" + "_" + std::to_string(table_level)] = p;
     }
-
     decr_level();
 }
 
@@ -141,8 +120,6 @@ void VisitorTable::visit(ASTVariable &node)
                 p.fragment_type = "VARIABLE";
             }
         }
-        // REDEFINITION ERROR
-        //  std::cout << node.get_var_name() << "::" << node.get_frag() << "::" << node.get_var_type() << current_function << "::" << node.get_expr_type() << "\n";
         if (table[get_fname_index(current_function)].contains(node.get_var_name()) && node.get_frag() == "LEFT_ASSIGN" && node.get_var_type() != "")
         {
             if (p.fragment_type.find("FOR") != std::string::npos && table[get_fname_index(current_function)][node.get_var_name()].fragment_type == p.fragment_type)
@@ -178,19 +155,15 @@ void VisitorTable::visit(ASTVariable &node)
                 }
             }
         }
-        // Because we gonna keep type variable when we assign new value to variable
         if (table[get_fname_index(current_function)].contains(node.get_var_name()) && node.get_frag() == "LEFT_ASSIGN" && node.get_var_type() == "")
         {
             return;
         }
 
-        // UNDEFINED VARIABLE ERROR
-
         if (!table[get_fname_index(current_function)].contains(node.get_var_name()) && node.get_var_type() == "" && !inner_table[std::to_string(inner_counter)].contains(node.get_var_name()))
         {
             if ((p.fragment_type.find("FOR") == std::string::npos || !inner_table[std::to_string(inner_counter + 1)].contains(node.get_var_name())) && node.get_var_type() == "")
             {
-                // CHECK IF VARIABLE EXSITS IN GLOBAL SCOPE
                 if (table[0].contains(node.get_var_name()))
                 {
                     node.set_var_type(table[0][node.get_var_name()].type);
@@ -214,16 +187,12 @@ void VisitorTable::visit(ASTVariable &node)
     {
         if (node.is_literal())
         {
-            // error
             throw "Parameter cannot be literal!\n";
-
-            // p.fragment_type = "LPVARIABLE";
         }
         else
         {
             p.fragment_type = "PVARIABLE_" + node.get_func_name();
         }
-        // P(arameter)Variable
     }
 
     p.level = table_level;
@@ -259,18 +228,6 @@ void VisitorTable::visit(ASTVariable &node)
 
     std::string key = node.get_var_name();
 
-    // if((node.get_frag() == "RIGHT_ASSIGN1" || node.get_frag() == "RIGHT_ASSIGN2") && p.fragment_type[0] != 'L' && current_scope == "")
-    //{
-
-    //  p.type = table[get_fname_index(current_function)][node.get_var_name()].type;
-    // key = node.get_var_name();
-    //--key = node.get_var_name() + "_" + std::to_string(table_level);
-
-    // table[get_fname_index(current_function)][key] = p;
-
-    // } //else if(p.fragment_type == "PVARIABLE") {
-    //     key = key + "_" + node.get_func_name();
-    // }
     if (current_scope == "" && p.fragment_type.find("FOR") == std::string::npos && func_scope < 3)
     {
         table[get_fname_index(current_function)][key] = p;
@@ -341,11 +298,6 @@ void VisitorTable::visit(ASTFuncCall &node)
             node.append_args_to_vector(arg->get_arg(), table[get_fname_index(current_function)][arg->get_arg()].type);
         }
     }
-
-    // for(auto& param : node.get_args_from_vector())
-    // {
-    //     std::cout << "Args: " << param.first << " :: " << param.second << "\n";
-    // }
     p.fragment_type = "FUNCTION_CALL";
     table[get_fname_index(current_function)][node.func_name()] = p;
 }
@@ -488,15 +440,6 @@ void VisitorTable::visit(ASTReturn &node)
 
 void VisitorTable::visit(ASTIf &node)
 {
-    // Properties p1;
-    // p1.fragment_type = "IFVARIABLE";
-    // p1.level = table_level;
-    // p1.type = node.get_first_type();
-    // if(current_scope == "")
-    // {
-    //     table[get_fname_index(current_function)][node.get_first()] = p1;
-    // } else {
-
     if (table[get_fname_index(current_function)].contains(node.get_first()) && !inner_table[std::to_string(inner_counter)].contains(node.get_first()))
     {
         inner_table[std::to_string(inner_counter)][node.get_first()] = table[get_fname_index(current_function)][node.get_first()].type;
@@ -562,38 +505,21 @@ void VisitorTable::visit(ASTFor &node)
 
     if (node.get_op() != nullptr)
     {
-        // if(node.get_op()->get_assign() != nullptr)
-        // {
-        //     node.get_op()->get_assign()->get_lvalue()->set_expr_type("for");
-        // }
-
         node.get_op()->accept(*this);
     }
     incr_level();
     std::size_t cs = inner_counter + 1;
     node.get_scope()->accept(*this);
     if (pit)
+    {
         print_inner_table(std::to_string(cs));
-
+    }
     decr_level();
-
-    //????????????????
-    // if(table[get_fname_index(current_function)][node.get_assing()->get_lvalue()->get_var_name()].level > table_level)
-    // {
-    //      try {
-    //             throw std::runtime_error("ERROR: Redefinition variable \'" + node.get_assing()->get_lvalue()->get_var_name() + "\'");
-    //         } catch(std::runtime_error& e)
-    //         {
-    //             std::cerr << e.what() << "\n";
-    //             exit(EXIT_FAILURE);
-    //         }
-    // }
 }
 
 void VisitorTable::visit(ASTForCond &node)
 {
     Properties p2;
-    // std::cout << "ans" << (node.is_literal());
     if (node.is_literal())
     {
         p2.fragment_type = "LFORCONDVARIABLE";
@@ -623,7 +549,6 @@ void VisitorTable::visit(ASTForCond &node)
         }
         else
         {
-            // for(int i = 0; i < k(undefined); i++)
             try
             {
                 throw std::runtime_error("ERROR1: Undefined variable \'" + node.get_second() + "\' in cond-expression: \'" + node.get_first() + " " + node.get_op() + " " + node.get_second() + "\'");
@@ -636,7 +561,6 @@ void VisitorTable::visit(ASTForCond &node)
         }
     }
     p2.level = table_level;
-    // for(int i = 0; j(undefined) < 10; i++)
     if (!table[get_fname_index(current_function)].contains(node.get_first()))
     {
         if (!inner_table[std::to_string(inner_counter + 1)].contains(node.get_first()))
@@ -653,23 +577,6 @@ void VisitorTable::visit(ASTForCond &node)
         }
     }
     inner_table[std::to_string(inner_counter + 1)][node.get_second()] = p2.type;
-    if (current_scope == "")
-    {
-        // table[get_fname_index(current_function)][node.get_second()] = p2;
-    }
-    else
-    {
-    }
-
-    // table[get_fname_index(current_function)][node.get_second()+"_cond" + "_" + std::to_string(table_level)] = p2;
-
-    // Properties p1;
-    // p1.fragment_type = "FORCONDVARIABLE";
-    // p1.level = table_level;
-    // p1.type = table[get_fname_index(current_function)][node.get_first()].type;
-    // table[get_fname_index(current_function)][node.get_first()] = p1;
-
-    // table[get_fname_index(current_function)][node.get_first()+"_cond" + "_" + std::to_string(table_level)] = p1;
 }
 
 void VisitorTable::visit(ASTForOp &node)
@@ -699,13 +606,6 @@ void VisitorTable::visit(ASTForOp &node)
         {
             p1.type = table[get_fname_index(current_function)][node.get_id()].type;
         }
-
-        // if(current_scope == "")
-        // {
-        //     table[get_fname_index(current_function)][node.get_id()] = p1;
-        // }
-
-        // table[get_fname_index(current_function)][node.get_id()+"_op" + "_" + std::to_string(table_level)] = p1;
     }
 }
 

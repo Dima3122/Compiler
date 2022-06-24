@@ -7,8 +7,7 @@
 #include <fstream>
 #include <iostream>
 
-antlrcpp::Any
-Visitor::visitExpressions(CsharpParser::ExpressionsContext *context)
+antlrcpp::Any Visitor::visitExpressions(CsharpParser::ExpressionsContext *context)
 {
 
     if (context->func_def())
@@ -81,8 +80,7 @@ antlrcpp::Any Visitor::visitProgram(CsharpParser::ProgramContext *context)
     return antlrcpp::Any(context);
 }
 
-antlrcpp::Any
-Visitor::visitAssign_statement(CsharpParser::Assign_statementContext *context)
+antlrcpp::Any Visitor::visitAssign_statement(CsharpParser::Assign_statementContext *context)
 {
     return antlrcpp::Any(context);
 }
@@ -152,8 +150,7 @@ antlrcpp::Any Visitor::visitLiteral(CsharpParser::LiteralContext *context)
     return antlrcpp::Any(context);
 }
 
-antlrcpp::Any
-Visitor::visitReturn_statement(CsharpParser::Return_statementContext *context)
+antlrcpp::Any Visitor::visitReturn_statement(CsharpParser::Return_statementContext *context)
 {
     if (context->ID())
     {
@@ -194,31 +191,26 @@ antlrcpp::Any Visitor::visitArg(CsharpParser::ArgContext *context)
     return antlrcpp::Any(context);
 }
 
-antlrcpp::Any
-Visitor::visitFor_statement(CsharpParser::For_statementContext *context)
+antlrcpp::Any Visitor::visitFor_statement(CsharpParser::For_statementContext *context)
 {
     return antlrcpp::Any(context);
 }
 
-antlrcpp::Any
-Visitor::visitPrint_statement(CsharpParser::Print_statementContext *context)
+antlrcpp::Any Visitor::visitPrint_statement(CsharpParser::Print_statementContext *context)
 {
     return antlrcpp::Any(context);
 }
 
-antlrcpp::Any
-Visitor::visitFor_condition(CsharpParser::For_conditionContext *context)
+antlrcpp::Any Visitor::visitFor_condition(CsharpParser::For_conditionContext *context)
 {
     return antlrcpp::Any(context);
 }
-antlrcpp::Any
-Visitor::visitFor_operation(CsharpParser::For_operationContext *context)
+antlrcpp::Any Visitor::visitFor_operation(CsharpParser::For_operationContext *context)
 {
     return antlrcpp::Any(context);
 }
 
-antlrcpp::Any
-Visitor::visitKw_statement(CsharpParser::Kw_statementContext *context)
+antlrcpp::Any Visitor::visitKw_statement(CsharpParser::Kw_statementContext *context)
 {
     return antlrcpp::Any(context);
 }
@@ -280,13 +272,10 @@ void ASTReturn::accept(Visitor &visitor) { visitor.visit(*this); }
 void ASTIf::accept(Visitor &visitor) { visitor.visit(*this); }
 void ASTElse::accept(Visitor &visitor) { visitor.visit(*this); }
 void ASTPrint::accept(Visitor &visitor) { visitor.visit(*this); }
-VisitorInitialiser::VisitorInitialiser(antlrcpp::Any context)
-    : m_context(context) {}
+VisitorInitialiser::VisitorInitialiser(antlrcpp::Any context) : m_context(context) {}
 
 void VisitorInitialiser::visit(ASTProgram &node)
 {
-    // std::vector<ASTNode*> children;
-
     auto ctx = m_context.as<CsharpParser::ProgramContext *>();
     auto exprs = ctx->expressions();
 
@@ -311,29 +300,10 @@ void VisitorInitialiser::visit(ASTProgram &node)
 
             if (expr.is<CsharpParser::Assign_statementContext *>())
             {
-
-                VisitorInitialiser visitor(
-                    expr.as<CsharpParser::Assign_statementContext *>());
-                //***********************************************************
-                // child = new ASTVariable;
-                // static_cast<ASTVariable *>(child)->set_ctx_type("ASSIGN");
-                // child->accept(visitor);
-
-                // // Lock to add variable of undefined type
-                // if (static_cast<ASTVariable *>(child)->var_type() != "") {
-                //   node.append_child(child);
-                // }
-                //***********************************************************
-                // Check if statement looks like "(int) a = b + (c)"
-
-                //???? Depricated
-                // if (expr.as<CsharpParser::Assign_statementContext *>()->ASSIGN() !=
-                //     nullptr) {
-
+                VisitorInitialiser visitor(expr.as<CsharpParser::Assign_statementContext *>());
                 child2 = new ASTAssign;
                 child2->accept(visitor);
                 node.append_child(child2);
-                //}
             }
 
             if (expr.is<CsharpParser::If_statementContext *>())
@@ -361,7 +331,6 @@ void VisitorInitialiser::visit(ASTProgram &node)
                 child->accept(visitor);
                 node.append_child(child);
             }
-
             if (expr.is<CsharpParser::Read_statementContext *>())
             {
                 VisitorInitialiser visitor(
@@ -376,7 +345,6 @@ void VisitorInitialiser::visit(ASTProgram &node)
 
 void VisitorInitialiser::visit(ASTFor &node)
 {
-
     auto ctx = m_context.as<CsharpParser::For_statementContext *>();
     ASTAssign *for_assign = new ASTAssign;
     ASTForCond *for_cond = new ASTForCond;
@@ -404,7 +372,6 @@ void VisitorInitialiser::visit(ASTFor &node)
 
 void VisitorInitialiser::visit(ASTForCond &node)
 {
-
     auto ctx = m_context.as<CsharpParser::For_conditionContext *>();
 
     node.set_line(ctx->ID(0)->getSymbol()->getLine());
@@ -468,29 +435,7 @@ void VisitorInitialiser::visit(ASTScope &node)
             }
             if (expr.is<CsharpParser::Assign_statementContext *>())
             {
-                VisitorInitialiser visitor(
-                    expr.as<CsharpParser::Assign_statementContext *>());
-
-                //**********************************************************
-                // allow: <variable a, int>
-                //        <assign a, ...>
-
-                // child = new ASTVariable;
-
-                // static_cast<ASTVariable *>(child)->set_ctx_type("ASSIGN");
-                // static_cast<ASTVariable *>(child)->set_frag("LEFT_ASSIGN");
-                // child->accept(visitor);
-
-                // //Lock to add variable of undefined type
-                // if (static_cast<ASTVariable *>(child)->var_type() != "") {
-                //   node.append_statement(child);
-                // }
-                //**********************************************************
-                // Check if statement looks like "(int) a = b + (c)"
-
-                //????
-                // if (expr.as<CsharpParser::Assign_statementContext *>()->ASSIGN() !=
-                // nullptr || expr.as<CsharpParser::Assign_statementContext *>()->var_def) {
+                VisitorInitialiser visitor(expr.as<CsharpParser::Assign_statementContext *>());
                 ASTNode *child2 = nullptr;
                 child2 = new ASTAssign;
                 child2->accept(visitor);
@@ -515,13 +460,10 @@ void VisitorInitialiser::visit(ASTScope &node)
                     }
                     node.append_statement(child2);
                 }
-
-                // }
             }
             if (expr.is<CsharpParser::If_statementContext *>())
             {
-                VisitorInitialiser visitor(
-                    expr.as<CsharpParser::If_statementContext *>());
+                VisitorInitialiser visitor(expr.as<CsharpParser::If_statementContext *>());
                 child = new ASTIf;
                 child->accept(visitor);
                 node.append_statement(child);
@@ -529,8 +471,7 @@ void VisitorInitialiser::visit(ASTScope &node)
 
             if (expr.is<CsharpParser::Kw_statementContext *>())
             {
-                VisitorInitialiser visitor(
-                    expr.as<CsharpParser::Kw_statementContext *>());
+                VisitorInitialiser visitor(expr.as<CsharpParser::Kw_statementContext *>());
                 child = new ASTKw;
                 child->accept(visitor);
                 node.append_statement(child);
@@ -538,24 +479,21 @@ void VisitorInitialiser::visit(ASTScope &node)
 
             if (expr.is<CsharpParser::For_statementContext *>())
             {
-                VisitorInitialiser visitor(
-                    expr.as<CsharpParser::For_statementContext *>());
+                VisitorInitialiser visitor(expr.as<CsharpParser::For_statementContext *>());
                 child = new ASTFor;
                 child->accept(visitor);
                 node.append_statement(child);
             }
             if (expr.is<CsharpParser::Print_statementContext *>())
             {
-                VisitorInitialiser visitor(
-                    expr.as<CsharpParser::Print_statementContext *>());
+                VisitorInitialiser visitor(expr.as<CsharpParser::Print_statementContext *>());
                 child = new ASTPrint;
                 child->accept(visitor);
                 node.append_statement(child);
             }
             if (expr.is<CsharpParser::Read_statementContext *>())
             {
-                VisitorInitialiser visitor(
-                    expr.as<CsharpParser::Read_statementContext *>());
+                VisitorInitialiser visitor(expr.as<CsharpParser::Read_statementContext *>());
                 child = new ASTRead;
                 child->accept(visitor);
                 node.append_statement(child);
@@ -566,13 +504,11 @@ void VisitorInitialiser::visit(ASTScope &node)
 
 void VisitorInitialiser::visit(ASTArgs &node)
 {
-    auto ctx = visitArg(m_context.as<CsharpParser::ArgContext *>())
-                   .as<antlr4::tree::TerminalNode *>();
+    auto ctx = visitArg(m_context.as<CsharpParser::ArgContext *>()).as<antlr4::tree::TerminalNode *>();
     if (m_context.as<CsharpParser::ArgContext *>()->literal())
     {
         node.set_literal(true);
     }
-
     node.set_line(ctx->getSymbol()->getLine());
     node.set_arg(ctx->getText());
 }
@@ -635,7 +571,6 @@ void VisitorInitialiser::visit(ASTAssign &node)
     {
         l->set_var_name(ctx->ID(ind)->getText());
         l->set_line(ctx->ID(0)->getSymbol()->getLine());
-
         ind++;
     }
     else
@@ -644,14 +579,12 @@ void VisitorInitialiser::visit(ASTAssign &node)
         l->set_var_type(ctx->var_def()->VAR()->getText());
         l->set_line(ctx->var_def()->ID()->getSymbol()->getLine());
     }
+
     l->set_frag("LEFT_ASSIGN");
-
     r1->set_line(l->get_line());
-
     r2->set_line(l->get_line());
     node.set_lvalue(l);
 
-    // FuncCall, like 'bool b = s1.Contains(s2);'
     if (ctx->func_call() != nullptr)
     {
         VisitorInitialiser visitor(ctx->func_call());
@@ -662,7 +595,6 @@ void VisitorInitialiser::visit(ASTAssign &node)
     }
     else
     {
-        // Rvalue1
         delete f;
         if ((ctx->ID(ind) != nullptr) || ctx->literal(lit_ind) != nullptr)
         {
@@ -681,7 +613,6 @@ void VisitorInitialiser::visit(ASTAssign &node)
                 ind++;
             }
             r1->set_frag("RIGHT_ASSIGN1");
-            // Rvalue2
             if (ctx->ID(ind) != nullptr)
             {
                 is_r2_set = true;
@@ -738,7 +669,6 @@ void VisitorInitialiser::visit(ASTFunction &node)
     {
         node.return_type() = ctx->VOID()->getText();
     }
-
     if (ctx->pars() != nullptr)
     {
         auto pars_ctx = ctx->pars();
@@ -754,9 +684,6 @@ void VisitorInitialiser::visit(ASTFunction &node)
     }
 }
 
-// NOTE: Perhabs i should implement this as "visit(ASTAssign &node)",
-// making "visitReturn_statement" implementation more clearly, cleaner and
-// shorter
 void VisitorInitialiser::visit(ASTReturn &node)
 {
     auto ctx = m_context.as<CsharpParser::Return_statementContext *>();
@@ -829,8 +756,7 @@ void VisitorInitialiser::visit(ASTVariable &node)
 void VisitorInitialiser::visit(ASTFuncCall &node)
 {
     auto ctx = m_context.as<CsharpParser::Func_callContext *>();
-    node.func_name() =
-        ctx->ID()->getText();
+    node.func_name() = ctx->ID()->getText();
 
     node.set_line(ctx->ID()->getSymbol()->getLine());
     if (ctx->args() != nullptr)
@@ -848,7 +774,6 @@ void VisitorInitialiser::visit(ASTFuncCall &node)
 void VisitorInitialiser::visit(ASTElse &node)
 {
     auto ctx = m_context.as<CsharpParser::Else_statementContext *>();
-    // OPTIMIZE
     if (ctx->scope() != nullptr)
     {
         auto else_scope = new ASTScope;
@@ -883,16 +808,13 @@ void VisitorInitialiser::visit(ASTIf &node)
     node.set_first_type("ID");
     if (ctx->ID().size() > 1)
     {
-        // FIXED set_first -> set_second
         node.set_second(ctx->ID(1)->getText());
         node.set_second_type("ID");
-
         node.set_op(ctx->LOGIC_OP()->getText());
     }
     else if (ctx->literal() != nullptr)
     {
-        auto ctx_literal =
-            visitLiteral(ctx->literal()).as<antlr4::tree::TerminalNode *>();
+        auto ctx_literal = visitLiteral(ctx->literal()).as<antlr4::tree::TerminalNode *>();
         node.set_literal(true);
         node.set_second(ctx_literal->getText());
         if (ctx->literal()->NUMBER() != nullptr)
@@ -1075,7 +997,6 @@ void VisitorTraverse::visit(ASTFuncCall &node)
 
 void VisitorTraverse::visit(ASTScope &node)
 {
-    // NOTE:
     set_indent(node.get_depth());
     stream << "<scope "
            << "name=\'" << node.get_scope_name() << "\'>\n";

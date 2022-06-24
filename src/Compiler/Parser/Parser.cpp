@@ -15,12 +15,12 @@ namespace cs_lang
     {
     public:
         void syntaxError(
-            antlr4::Recognizer * /*recognizer*/,
-            antlr4::Token * /*offendingSymbol*/,
+            antlr4::Recognizer *,
+            antlr4::Token *,
             size_t line,
             size_t column,
             const std::string &message,
-            std::exception_ptr /*e*/) override
+            std::exception_ptr) override
         {
             m_errors.emplace_back(Error{line, column, message});
         }
@@ -46,9 +46,6 @@ namespace cs_lang
         {
             delete_tmp = true;
             xml_file = "../../examples/tmp.xml";
-            // std::ofstream file(xml_file);
-            // file.open(xml_file);
-            // file.close();
         }
 
         std::ofstream stream(xml_file);
@@ -76,14 +73,7 @@ namespace cs_lang
 
     void dump_table(VisitorTable table)
     {
-        // VisitorTable visitor;
-        // program->accept(visitor);
         table.print_table();
-        // for(auto& items : table)
-        // {
-        //     std::cout << std::setw(30) << items.first << std::setw(20) << items.second.type
-        //     << std::setw(3) << items.second.level << std::setw(20) << items.second.fragment_type << "\n";
-        // }
     }
 
     tokens_array dump_tokens(std::string filepath, int print_key)
@@ -119,7 +109,6 @@ namespace cs_lang
                           << vocabulary.getSymbolicName(tkn->getType())
                           << " \'" << tkn->getText() << "\'\n";
             }
-
             tokens.push_back(tkn->getLine(), tkn->getCharPositionInLine(), vocabulary.getSymbolicName(tkn->getType()), tkn->getText());
         }
         return tokens;
@@ -128,12 +117,9 @@ namespace cs_lang
     ParseResult parse_test(std::string filepath)
     {
         std::ifstream stream(filepath);
-
         if (!stream.is_open())
         {
             throw "Error: FileNotFound\n";
-
-            // return;
         }
 
         antlr4::ANTLRInputStream input(stream);

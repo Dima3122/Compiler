@@ -27,37 +27,23 @@ class ASTRead;
 class Visitor : public CsharpVisitor
 {
 public:
-    antlrcpp::Any
-    visitExpressions(CsharpParser::ExpressionsContext *context) override;
-
+    antlrcpp::Any visitExpressions(CsharpParser::ExpressionsContext *context) override;
     antlrcpp::Any visitProgram(CsharpParser::ProgramContext *context) override;
     antlrcpp::Any visitVar_def(CsharpParser::Var_defContext *context) override;
     antlrcpp::Any visitFunc_def(CsharpParser::Func_defContext *context) override;
-
-    antlrcpp::Any visitAssign_statement(
-        CsharpParser::Assign_statementContext *context) override;
-    antlrcpp::Any
-    visitStatement(CsharpParser::StatementContext *context) override;
+    antlrcpp::Any visitAssign_statement(CsharpParser::Assign_statementContext *context) override;
+    antlrcpp::Any visitStatement(CsharpParser::StatementContext *context) override;
     antlrcpp::Any visitScope(CsharpParser::ScopeContext *context) override;
-    antlrcpp::Any
-    visitFunc_call(CsharpParser::Func_callContext *context) override;
+    antlrcpp::Any visitFunc_call(CsharpParser::Func_callContext *context) override;
     antlrcpp::Any visitArgs(CsharpParser::ArgsContext *context) override;
     antlrcpp::Any visitLiteral(CsharpParser::LiteralContext *context) override;
-    antlrcpp::Any visitReturn_statement(
-        CsharpParser::Return_statementContext *context) override;
+    antlrcpp::Any visitReturn_statement(CsharpParser::Return_statementContext *context) override;
     antlrcpp::Any visitArg(CsharpParser::ArgContext *context) override;
-    antlrcpp::Any
-    visitIf_statement(CsharpParser::If_statementContext *context) override;
-    antlrcpp::Any
-    visitFor_statement(CsharpParser::For_statementContext *context) override;
-
-    antlrcpp::Any
-    visitFor_condition(CsharpParser::For_conditionContext *context) override;
-
-    antlrcpp::Any
-    visitFor_operation(CsharpParser::For_operationContext *context) override;
-    antlrcpp::Any
-    visitKw_statement(CsharpParser::Kw_statementContext *context) override;
+    antlrcpp::Any visitIf_statement(CsharpParser::If_statementContext *context) override;
+    antlrcpp::Any visitFor_statement(CsharpParser::For_statementContext *context) override;
+    antlrcpp::Any visitFor_condition(CsharpParser::For_conditionContext *context) override;
+    antlrcpp::Any visitFor_operation(CsharpParser::For_operationContext *context) override;
+    antlrcpp::Any visitKw_statement(CsharpParser::Kw_statementContext *context) override;
     antlrcpp::Any visitPars(CsharpParser::ParsContext *context) override;
     antlrcpp::Any visitPrint_statement(CsharpParser::Print_statementContext *context) override;
     antlrcpp::Any visitElse_statement(CsharpParser::Else_statementContext *context) override;

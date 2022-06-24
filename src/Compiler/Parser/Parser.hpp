@@ -9,7 +9,6 @@
 
 namespace cs_lang
 {
-
     struct Error
     {
         size_t m_line;
@@ -41,7 +40,6 @@ namespace cs_lang
         Errors m_errors;
     };
 
-    // void dump_ast(ASTProgram& program);
     void dump_errors(Errors &errors);
 
     struct token
@@ -73,4 +71,4 @@ namespace cs_lang
     void dump_table(VisitorTable table);
     ParseResult parse_test(std::string filepath);
 
-} // namespace cs_lexer
+}

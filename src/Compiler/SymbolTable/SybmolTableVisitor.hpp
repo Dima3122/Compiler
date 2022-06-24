@@ -12,7 +12,7 @@
 
 struct Properties
 {
-    std::string fragment_type; // VARIABLE, FUNCTION
+    std::string fragment_type;
     std::size_t level = 0;
     std::string type = "";
 };
@@ -52,7 +52,6 @@ public:
     std::size_t get_fname_index(std::string s) { return fname_indexer[s]; }
     InnerTable get_inner_table() { return inner_table; }
     void set_fname_index(std::string s) { fname_indexer[s] = vector_num++; }
-    // void set_symbol(std::string s, Properties p)  { table[s] = p; }
     static void incr_level() { table_level++; }
     static void decr_level() { table_level--; }
     std::string get_literal_type(std::string literal, std::string func_name)
