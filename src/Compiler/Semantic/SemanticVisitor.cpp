@@ -8,14 +8,6 @@
 #include <utility>
 #include <algorithm>
 
-// ASTProgram ASTFunction
-// ASTVariable ASTFuncCall
-// ASTScope ASTArgs
-// ASTAssign ASTReturn
-// ASTIf ASTFor
-// ASTForCond ASTForOp
-// ASTKw
-
 static std::string current_function_scope = "Global";
 static std::string current_scope = "";
 static std::size_t inner_counter = 0;
@@ -80,7 +72,6 @@ int SemanticVisitor::get_level(std::string str)
     return i;
 }
 
-// int main(int i) {}
 void SemanticVisitor::visit(ASTFunction &node)
 {
     current_function_scope = node.func_name();
@@ -211,11 +202,6 @@ void SemanticVisitor::visit(ASTAssign &node)
     {
         bool is_def = node.get_lvalue()->get_var_type() == "" ? false : true;
         std::string lhs_type = "";
-        /*if(inner_table[std::to_string(inner_counter)].contains(node.get_lvalue()->get_var_name()))
-        {
-            lhs_type = inner_table[std::to_string(inner_counter)][node.get_lvalue()->get_var_name()];
-        }
-        else */
         if (table[get_fname_index(current_function_scope)].contains(node.get_lvalue()->get_var_name()))
         {
             lhs_type = table[get_fname_index(current_function_scope)][node.get_lvalue()->get_var_name()].type;
@@ -234,10 +220,6 @@ void SemanticVisitor::visit(ASTAssign &node)
             }
             else
             {
-                /*if(inner_table[std::to_string(inner_counter)].contains(node.get_rvalue1()->get_var_name()))
-                {
-                    type_r1 = inner_table[std::to_string(inner_counter)][node.get_rvalue1()->get_var_name()];
-                } else*/
                 if (table[get_fname_index(current_function_scope)].contains(node.get_rvalue1()->get_var_name()))
                 {
                     type_r1 = table[get_fname_index(current_function_scope)][node.get_rvalue1()->get_var_name()].type;
@@ -262,7 +244,6 @@ void SemanticVisitor::visit(ASTAssign &node)
                     else
                     {
                         type_r2 = table[get_fname_index(current_function_scope)][node.get_rvalue2()->get_var_name()].type;
-                        // CHECK: 'string str = "10" + str;'
                         if (is_def && node.get_rvalue2()->get_var_name() == node.get_lvalue()->get_var_name())
                         {
                             errors.emplace_back(std::make_pair("Assign ERROR", "Use of unassigned local variable \'" + node.get_lvalue()->get_var_name() + "in line " + std::to_string(node.get_line()) + "\'"));
@@ -449,7 +430,6 @@ void SemanticVisitor::visit(ASTIf &node)
         }
         if (inner_table[std::to_string(inner_counter)].contains(node.get_first()))
         {
-
             type_first_operand = inner_table[std::to_string(inner_counter)][node.get_first()];
         }
         else if (table[get_fname_index(current_function_scope)].contains(node.get_first()))

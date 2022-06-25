@@ -70,5 +70,4 @@ namespace cs_lang
     void dump_ast(ASTProgram *program, std::string xml_file, bool print_key);
     void dump_table(VisitorTable table);
     ParseResult parse_test(std::string filepath);
-
 }
