@@ -22,7 +22,9 @@ std::string exec(const char *cmd)
     while (!feof(pipe))
     {
         if (fgets(buffer, 128, pipe) != NULL)
+        {
             result += buffer;
+        }
     }
     pclose(pipe);
     return result;
@@ -33,7 +35,7 @@ int main(int argc, const char *argv[])
 
     CLI::App app;
     std::string filepath;
-    std::string fileout = "../../examples/file.ll";
+    std::string fileout = "../examples/file.ll";
     std::string xml_file = "";
     bool dump_tokens_key = false;
     bool version_key = false;
@@ -100,7 +102,7 @@ int main(int argc, const char *argv[])
     CodeGen code_generator(stream, filepath, fileout + ".ll");
     parse_result.m_program->accept(code_generator);
     stream.close();
-    std::string llc_command = "llc " + fileout + ".ll" + " && clang -o " + fileout + " " + fileout + ".s";
+    std::string llc_command = "llc-14 " + fileout + ".ll" + " && clang-14 -o " + fileout + " " + fileout + ".s -no-pie";
 
     exec(llc_command.c_str());
     std::string rem_llc = fileout + ".ll";
@@ -119,8 +121,8 @@ int main(int argc, const char *argv[])
             }
             ll.close();
         }
-        if (fileout == "../../examples/file.ll")
-            std::remove("../../examples/file.ll");
+        // if (fileout == "../examples/file.ll")
+        //     std::remove("../examples/file.ll");
     }
     return 0;
 }

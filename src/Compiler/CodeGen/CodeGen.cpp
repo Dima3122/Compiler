@@ -8,25 +8,6 @@
 #include <utility>
 #include <algorithm>
 
-//STRING
-//call i32 (i8*, ...) @printf(i8* noundef getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i64 0, i64 0), i8* noundef %4) string
-// @__const.main.b = private unnamed_addr constant [5 x i8] c"gg\00\00\00", align 1
-// @.str = private unnamed_addr constant [4 x i8] c"%s\0A\00", align 1
-
-
-//INT
-//call i32 (i8*, ...) @printf(i8* noundef getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i64 0, i64 0), i32 noundef %5) int
-// @.str = private unnamed_addr constant [4 x i8] c"%d\0A\00", align 1
-
-//CHAR
-//call i32 (i8*, ...) @printf(i8* noundef getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i64 0, i64 0), i32 noundef %5) char
-//@.str = private unnamed_addr constant [4 x i8] c"%c\0A\00", align 1
-
-
-//FLOAT
-//call i32 (i8*, ...) @printf(i8* noundef getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i64 0, i64 0), double noundef %5)
-// @.str = private unnamed_addr constant [4 x i8] c"%f\0A\00", align 1
-
 std::size_t print_counter = 0;
 std::size_t scanf_counter = 0;
 std::string current_function = "Global";
