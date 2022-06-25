@@ -16,7 +16,9 @@ std::string exec(const char *cmd)
 {
     FILE *pipe = popen(cmd, "r");
     if (!pipe)
+    {
         return "ERROR";
+    }
     char buffer[128];
     std::string result = "";
     while (!feof(pipe))
@@ -62,9 +64,6 @@ int main(int argc, const char *argv[])
     {
         std::cout << VERSION << '\n';
     }
-    // parse_test
-    //  cs_lexer::dump_tokens(filepath, dump_tokens_key);
-    //  cs_lexer::dump_ast(filepath, xml_file, dump_ast);
     auto parse_result = cs_lang::parse_test(filepath);
     if (!parse_result.m_errors.empty())
     {
@@ -85,8 +84,6 @@ int main(int argc, const char *argv[])
     }
     SemanticVisitor semantic_visitor(visitor.get_table(), visitor.get_fprops(), visitor.get_indexer(), visitor.get_inner_table());
     parse_result.m_program->accept(semantic_visitor);
-    // if(dump_sem)
-    // {
 
     if (semantic_visitor.get_errors().size() > 0)
     {
@@ -102,13 +99,9 @@ int main(int argc, const char *argv[])
     CodeGen code_generator(stream, filepath, fileout + ".ll");
     parse_result.m_program->accept(code_generator);
     stream.close();
-    std::string llc_command = "llc-14 " + fileout + ".ll" + " && clang-14 -o " + fileout + " " + fileout + ".s -no-pie";
+    std::string llc_command = "llc-14 " + fileout + ".ll && clang-14 -o " + fileout + " " + fileout + ".s -no-pie";
 
     exec(llc_command.c_str());
-    std::string rem_llc = fileout + ".ll";
-    std::remove(rem_llc.c_str());
-    std::string rem_s = fileout + ".s";
-    std::remove(rem_s.c_str());
     if (dump_asm)
     {
         std::string line;
@@ -121,8 +114,6 @@ int main(int argc, const char *argv[])
             }
             ll.close();
         }
-        // if (fileout == "../examples/file.ll")
-        //     std::remove("../examples/file.ll");
     }
     return 0;
 }

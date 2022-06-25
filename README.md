@@ -9,3 +9,7 @@
 2. --dump-table  -> Вывод таблицы символов в терминал
 3. --dump-asm    -> Вывод llvm ir в терминал
 4. --out, -o     -> Куда сохранять ll файл.
+
+# Launch 
+1. ./bin/compiler_exe -f ./examples/hello.cs -o ./examples/hello.ll
+clang-14 -o <Имя выходного файла> <Ассемблерный файл> -no-pie
